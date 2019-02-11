@@ -52,11 +52,11 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
   void initState() {
     super.initState();
     this.controller = AnimationController(duration: Duration(seconds: 2), vsync: this);
-    this.animation = Tween<double>(begin: 0, end: 300.0).animate(this.controller)
-    ..addListener((){
-      setState((){});
-    });
-    print(this is TickerProvider);
+    this.animation = Tween<double>(begin: 0, end: 300.0).animate(this.controller);
+    // ..addListener((){
+    //   print(this.animation.value);
+    //   setState((){});
+    // });
   }
   
   @override
@@ -65,17 +65,37 @@ class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateM
       appBar: AppBar(
         title: Text("动画1"),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.nature), onPressed: () => this.controller.forward())
+          IconButton(icon: Icon(Icons.nature), onPressed: () {
+            this.controller.reset();
+            this.controller.forward() ;
+          })
         ],
       ),
-      body: Center(
-        child: Container(
-          child: FlutterLogo(),
+      body: Column(
+        children: <Widget>[
+          SizedBox(width: 200, height: 200,
+            child: Image.network("https://s2.showstart.com/img/2019/20190211/5559166652e7473bb60994cfa075fee8_600_800_114331.0x0.jpg", fit: BoxFit.fill,),
+          ),
+          AnimatedLogo(this.animation)
+        ]
+      )
+    );
+  }
+}
+
+class AnimatedLogo extends AnimatedWidget {
+  final Animation<double> animation;
+  AnimatedLogo(this.animation): super(listenable: animation);
+  @override
+  Widget build(BuildContext context) {
+    print("绘制AnimatedLogo");
+    return Center(
+      child: Container(
+        child: FlutterLogo(),
           decoration: BoxDecoration(color: Colors.orange),
           height: this.animation.value, 
           width: this.animation.value,
-          ),
-        )
-      );
+      ),
+    );
   }
 }
