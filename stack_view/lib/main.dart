@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/animation.dart';
 
 void main() => runApp(MyApp());
 
@@ -44,58 +43,47 @@ class MyHomePage extends StatefulWidget {
   _MyHomePageState createState() => _MyHomePageState();
 }
 
-class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
-  
-  Animation<double> animation ;
-  AnimationController controller;
-  
-  void initState() {
-    super.initState();
-    this.controller = AnimationController(duration: Duration(seconds: 2), vsync: this);
-    this.animation = Tween<double>(begin: 0, end: 300.0).animate(this.controller);
-    // ..addListener((){
-    //   print(this.animation.value);
-    //   setState((){});
-    // });
+class _MyHomePageState extends State<MyHomePage> {
+  int _counter = 0;
+
+  void _incrementCounter() {
+    setState(() {
+      // This call to setState tells the Flutter framework that something has
+      // changed in this State, which causes it to rerun the build method below
+      // so that the display can reflect the updated values. If we changed
+      // _counter without calling setState(), then the build method would not be
+      // called again, and so nothing would appear to happen.
+      _counter++;
+    });
   }
-  
+
   @override
   Widget build(BuildContext context) {
+    // This method is rerun every time setState is called, for instance as done
+    // by the _incrementCounter method above.
+    //
+    // The Flutter framework has been optimized to make rerunning build methods
+    // fast, so that you can just rebuild anything that needs updating rather
+    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        title: Text("动画1"),
-        actions: <Widget>[
-          IconButton(icon: Icon(Icons.nature), onPressed: () {
-            this.controller.reset();
-            this.controller.forward() ;
-          })
-        ],
+        // Here we take the value from the MyHomePage object that was created by
+        // the App.build method, and use it to set our appbar title.
+        title: Text(widget.title),
       ),
-      body: Column(
-        children: <Widget>[
-          SizedBox(width: 200, height: 200,
-            child: Image.network("https://s2.showstart.com/img/2019/20190211/5559166652e7473bb60994cfa075fee8_600_800_114331.0x0.jpg", fit: BoxFit.fill,),
-          ),
-          AnimatedLogo(this.animation)
-        ]
-      )
-    );
-  }
-}
-
-class AnimatedLogo extends AnimatedWidget {
-  final Animation<double> animation;
-  AnimatedLogo(this.animation): super(listenable: animation);
-  @override
-  Widget build(BuildContext context) {
-    print("绘制AnimatedLogo");
-    return Center(
-      child: Container(
-        child: FlutterLogo(),
-          decoration: BoxDecoration(color: Colors.orange),
-          height: this.animation.value, 
-          width: this.animation.value,
+      body: Center(
+        // Center is a layout widget. It takes a single child and positions it
+        // in the middle of the parent.
+        child: Stack(children: <Widget>[
+            Container(width: 200,height: 200,decoration: BoxDecoration(color: Colors.orange)),
+            Container(width: 200,height: 300,child: Text("Yes..."), decoration: BoxDecoration(color: Colors.pink))
+        ])
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _incrementCounter,
+        tooltip: 'Increment',
+        child: Icon(Icons.add),
+      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
