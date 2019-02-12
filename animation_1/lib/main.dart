@@ -47,33 +47,40 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> with SingleTickerProviderStateMixin {
   
   Animation<double> animation ;
+  Animation<Color> animationColor;
   AnimationController controller;
   
   void initState() {
     super.initState();
     this.controller = AnimationController(duration: Duration(seconds: 2), vsync: this);
     this.animation = Tween<double>(begin: 0, end: 300.0).animate(this.controller)
+    ..addStatusListener((status) => print("动态当前状态: $status"))
     ..addListener((){
       setState((){});
     });
+    this.animationColor = ColorTween(begin: Colors.pink, end: Colors.orange).animate(this.controller);
     print(this is TickerProvider);
   }
   
   @override
   Widget build(BuildContext context) {
+    // print(this.animation.value);
     return Scaffold(
       appBar: AppBar(
         title: Text("动画1"),
         actions: <Widget>[
-          IconButton(icon: Icon(Icons.nature), onPressed: () => this.controller.forward())
+          IconButton(icon: Icon(Icons.nature), onPressed: () { 
+            this.controller.reset();
+            this.controller.forward(from: 0.5);
+          })
         ],
       ),
       body: Center(
         child: Container(
           child: FlutterLogo(),
-          decoration: BoxDecoration(color: Colors.orange),
+          decoration: BoxDecoration(color: this.animationColor.value ?? Colors.orange),
           height: this.animation.value, 
-          width: this.animation.value,
+          width: this.animation.value / 2.0,
           ),
         )
       );
