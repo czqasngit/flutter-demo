@@ -39,6 +39,7 @@ class TodoCell extends StatelessWidget {
     ..showSnackBar(SnackBar(content: Text("$result")));
   }
 }
+
 class TodoListController extends StatelessWidget {
   var imageUrl = 'https://s2.showstart.com/img/2018/20181112/2f6c498ebabd47c3ba2f57e7c886d952_1280_900_1549294.0x0.jpg?imageMogr2/thumbnail/!312x220r/gravity/Center/crop/!312x220';
   @override
